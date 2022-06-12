@@ -23,6 +23,9 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs16.x
+  httpApi:
+    cors: true
+
 
 # you can overwrite defaults here
   stage: dev
@@ -64,10 +67,16 @@ functions:
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
-  events:
-    # - httpApi:
+
+    events:
+      - httpApi:
+          path: /products
+          method: GET
+    # events:
+    #   - httpApi:
     #     path: /products
     #     method: get
+
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
