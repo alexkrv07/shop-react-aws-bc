@@ -22,7 +22,7 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs16.x
 
 # you can overwrite defaults here
   stage: dev
@@ -59,7 +59,7 @@ provider:
 #    - include-me-dir/**
 
 functions:
-  hello:
+  getProductsList:
     handler: handler.getProductsList
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
