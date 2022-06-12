@@ -1,2 +1,4 @@
 import { getProductsList } from './handlers/getProductsList.mjs';
-export { getProductsList };
+import { getProductsById } from './handlers/getProductsById.mjs';
+
+export { getProductsList, getProductsById };

@@ -64,18 +64,18 @@ provider:
 functions:
   getProductsList:
     handler: handler.getProductsList
-#    The following are a few example events you can configure
-#    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
-
     events:
       - httpApi:
           path: /products
           method: GET
-    # events:
-    #   - httpApi:
-    #     path: /products
-    #     method: get
+
+  getProductsById:
+    handler: handler.getProductsById
+    events:
+      - httpApi:
+          path: /products/{productId}
+          method: GET
+
 
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
