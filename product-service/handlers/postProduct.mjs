@@ -1,7 +1,7 @@
 'use strict';
-
 import pkg from 'pg';
 const { Client } = pkg;
+
 
 const {PG_HOST, PG_PORT, PG_DATABASE, PG_USERNAME, PG_PASSWORD } = process.env;
 const dbOptions = {
@@ -16,8 +16,8 @@ const dbOptions = {
   connectionTimeoutMillis: 500
 };
 
-export const getProductsById = async (event, context, callback) => {
-  const productId = event.pathParameters.productId;
+export const postProduct = async (event, context, callback) => {
+
   const client = new Client(dbOptions);
   await client.connect();
   const response = {
@@ -26,20 +26,31 @@ export const getProductsById = async (event, context, callback) => {
     },
   };
 
-  try {
-    const query = `select p.id, p.title, p.description, p.price, s.count from products p, stocks s where p.id = '${productId}' and p.id = s.product_id`;
-    console.log(query);
 
-    const dbResponse = await client.query(query);
-    const productById = dbResponse.rows[0];
-    if (!productById) {
-      response.statusCode = 404;
+  try {
+    const {title, description, price} = JSON.parse(event.body);
+    console.log(event.body);
+    console.log({title, description, price});
+
+    if ((typeof title !== 'string'
+         || typeof description !== 'string'
+         || typeof price !== 'number')
+         || (
+           !title || !description || !price
+         )
+        ) {
+      response.statusCode = 400;
       response.body = JSON.stringify({
-        message: `Product with id = ${productId} doesn't exist.`
+        message: `Product data is invalid.`
       });
     } else {
-      response.statusCode = 200;
-      response.body = JSON.stringify(productById);
+      const query = `insert into products (title, description, price) values ('${title}', '${description}',  ${price})`;
+      console.log(query);
+
+      const dbResponse = await client.query(query);
+      const newproduct = dbResponse.rows[0];
+      response.statusCode = 201;
+      response.body = JSON.stringify(newproduct);
     }
 
 
@@ -52,5 +63,4 @@ export const getProductsById = async (event, context, callback) => {
     client.end();
     return response;
   }
-
 };
