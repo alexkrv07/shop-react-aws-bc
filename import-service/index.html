@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1 class="thumbnails-title">Thumbnails</h1>
+  <div id="thumbnail-container"></div>
+  <script>
+    const SERVICe_ENDPOINT = 'https://0s2lutaah8.execute-api.eu-west-1.amazonaws.com/thumbnails';
+    fetch(SERVICe_ENDPOINT)
+      .then(response => response.json())
+      .then(thumbnails => {
+        const content = thumbnails.map(thumbnail => {
+          return `
+          <div class="thumbnail"><img class="thumbnail-image" src="${thumbnail}"/></div>
+          `
+        }).join(' ');
+        document.querySelector('#thumbnail-container').innerHTML = content;
+
+      });
+  </script>
+
+</body>
+</html>
