@@ -56,24 +56,21 @@ provider:
 #    - include-me-dir/**
 
 functions:
-  thumbnailsList:
-    handler: handler.thumbnailsList
-#    The following are a few example events you can configure
-#    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
-    events:
-      - httpApi:
-          path: /thumbnails
-          method: GET
-  imageUpload:
-    handler: handler.imageUpload
-    events:
-      - s3:
-          bucket: aws-node-task5
-          event: s3:ObjectCreated:*
-          rules:
-            - prefix: images/
-          existing: true
+  # thumbnailsList:
+  #   handler: handler.thumbnailsList
+  #   events:
+  #     - httpApi:
+  #         path: /thumbnails
+  #         method: GET
+  # imageUpload:
+  #   handler: handler.imageUpload
+  #   events:
+  #     - s3:
+  #         bucket: aws-node-task5
+  #         event: s3:ObjectCreated:*
+  #         rules:
+  #           - prefix: images/
+  #         existing: true
 
   importProductsFile:
     handler: handler.importProductsFile
@@ -85,6 +82,15 @@ functions:
             parameters:
               querystrings:
                 name: true
+  importFileParser:
+    handler: handler.importFileParser
+    events:
+      - s3:
+          bucket: aws-node-task5
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: uploaded/
+          existing: true
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
